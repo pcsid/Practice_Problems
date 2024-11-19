@@ -1,39 +1,17 @@
-class Solution(object):
-    def isValid(self, s):
-        myStack = Stack()
-        for i in s:   
-            shouldBeOpen = ""
-            if i == ")":
-                shouldBeOpen = myStack.pop()
-                if not shouldBeOpen == "(":
-                    return False
-            elif i == "}":
-                shouldBeOpen = myStack.pop()
-                if not shouldBeOpen == "{":
-                    return False
-            elif i == "]":
-                shouldBeOpen = myStack.pop()
-                if not shouldBeOpen == "[":
-                    return False
+class Solution:
+    def isValid(self, s: str) -> bool:
+        myStack = []
+        for char in s:
+            if len(myStack) == 0:
+                myStack.append(char)
+            elif char == ")" and myStack[-1] == "(":
+                myStack.pop()
+            elif char == "]" and myStack[-1] == "[":
+                myStack.pop()
+            elif char == "}" and myStack[-1] == "{":
+                myStack.pop()
             else:
-                myStack.push(i)
-        if(myStack.isEmpty()):
+                myStack.append(char)
+        if len(myStack) == 0:
             return True
         return False
-class Stack:
-    def __init__(self):
-        self.items = []
-    def push(self, num):
-        self.items.append(num)
-    def isEmpty(self):
-        if len(self.items) == 0:
-            return True
-        return False
-    def pop(self):
-        if len(self.items) == 0:
-            return None
-        return self.items.pop()
-
-myObject = Solution()
-s = "]"
-print(myObject.isValid(s))
