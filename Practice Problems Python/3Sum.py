@@ -1,25 +1,31 @@
-class Solution(object):
-    def threeSum(self, nums):
-        returnList = []
-        nums.sort()
-
-        startIndex = 0
-        for i in nums:
-            if startIndex == len(nums) - 2:
-                break
-            pointOne = startIndex + 1
-            pointTwo = len(nums) - 1
-            while pointTwo > pointOne:
-                if nums[startIndex] + nums[pointOne] + nums[pointTwo] == 0:
-                    if([nums[startIndex], nums[pointOne], nums[pointTwo]] not in returnList):
-                        returnList.append([nums[startIndex], nums[pointOne], nums[pointTwo]])
-                    pointTwo -= 1
-                elif nums[startIndex] + nums[pointOne] + nums[pointTwo] > 0:
-                    pointTwo -= 1
-                elif nums[startIndex] + nums[pointOne] + nums[pointTwo] < 0:
-                    pointOne += 1
-
-            startIndex += 1
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        nums.sort()  # Sort the array
+        triplets = []
         
-        return returnList
-        
+        for i in range(len(nums)):
+            # Skip duplicate values for the first number
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            left, right = i + 1, len(nums) - 1
+            while left < right:
+                current_sum = nums[i] + nums[left] + nums[right]
+                if current_sum == 0:
+                    triplets.append([nums[i], nums[left], nums[right]])
+                    left += 1
+                    right -= 1
+
+                    # Skip duplicates for left and right
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right + 1]:
+                        right -= 1
+                elif current_sum > 0:
+                    right -= 1
+                else:
+                    left += 1
+
+        return triplets
